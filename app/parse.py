@@ -61,11 +61,16 @@ def get_page_with_products(url: str) -> List[Product]:
         driver.get(url)
         accept_cookies(driver)
         has_scroll_button(driver)
+
         products = driver.find_elements(By.CLASS_NAME, "thumbnail")
-        return [parse_single_product(product) for product in products]
+
+        return [
+            parse_single_product(product)
+            for product in products
+        ]
 
 
 def get_all_products() -> None:
-    for url_key in URLS:
-        products = get_page_with_products(URLS[url_key])
-        write_to_csv(f"{url_key}.csv", products)
+    for key, url in URLS.items():
+        products = get_page_with_products(url)
+        write_to_csv(f"{key}.csv", products)
